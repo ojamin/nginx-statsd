@@ -1,0 +1,23 @@
+apt-get source nginx
+
+cd nginx-*/debian/
+
+# Increment the package version by updating the changelog
+vim changelog
+
+cd modules
+
+clone this archive
+cd ..
+
+# Enable the nginx-statsd module
+vim rules
+# --add-module=debian/modules/nginx-statsd
+
+cd ..
+
+apt install autotools-dev debhelper po-debconf dh-systemd libexpat-dev libgd-dev libgeoip-dev libluajit-5.1-dev libmhash-dev libpam0g-dev libpcre3-dev libperl-dev libssl-dev libxslt1-dev zlib1g-dev
+
+dpkg-buildpackage -b -rfakeroot -us -uc
+cd ..
+dpkg -i nginx_*_all.deb nginx-core_*_amd64.deb nginx-common_*_all.deb
